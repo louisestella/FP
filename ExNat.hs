@@ -100,8 +100,8 @@ n <^> (Succ m) = n <*> (n <^> m)
 -- quotient
 (</>) :: Nat -> Nat -> Nat
 _ </> Zero = error "YOU SHALL NOT DIVIDE BY ZERO!" 
-n </> m 
-   | (m <= n)  = Succ((n <-> m) </> m)
+m </> n 
+   | (n <= m)  = Succ((m <-> n) </> n)
    | otherwise = Zero
 
 -- remainder
@@ -125,24 +125,27 @@ divides = (<|>)
 -- x `absDiff` y = |x - y|
 -- (Careful: here this - is the real minus operator!)
 absDiff :: Nat -> Nat -> Nat
-n        absDiff Zero     = n
-Zero     absDiff m        = m
-(Succ n) absDiff (Succ m) = n absDiff m
+n        `absDiff` Zero     = n
+Zero     `absDiff` m        = m
+(Succ n) `absDiff` (Succ m) = n `absDiff` m
 
 
 (|-|) = absDiff
 
 factorial :: Nat -> Nat
-factorial = undefined
+factorial Zero     = Succ Zero
+factorial (Succ n) = (Succ n) <*> factorial n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
-sg = undefined
+sg Zero = Zero
+sg n    = (Succ Zero)
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined
-
+lo b a
+    | (a >= b)  = Succ Zero <+> lo b (a </> b)
+    | otherwise = Zero
 
 --
 -- For the following functions we need Num(..).
@@ -150,10 +153,12 @@ lo = undefined
 --
 
 toNat :: Integral a => a -> Nat
-toNat = undefined
+toNat 0  = Zero
+toNat n  = (Succ Zero) <+> (toNat (n - 1))
 
 fromNat :: Integral a => Nat -> a
-fromNat = undefined
+fromNat Zero     = 0
+fromNat (Succ n) = 1 + (fromNat n)
 
 
 -- Obs: we can now easily make Nat an instance of Num.
@@ -165,7 +170,7 @@ instance Num Nat where
     abs n = n
     signum = sg
     fromInteger x
-        | x < 0     = undefined
-        | x == 0    = undefined
-        | otherwise = undefined
+        | x < 0     = toNat 0
+        | x == 0    = Zero
+        | otherwise = toNat x
 
