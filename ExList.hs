@@ -45,6 +45,9 @@ reverse (x:xs) = reverse xs ++ [x]
 []     ++ ys = ys
 (x:xs) ++ ys = x : (xs ++ ys)
 
+infixr 5 ++
+
+
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
 snoc w []     = [w]
@@ -128,12 +131,33 @@ any _ []     = False
 any p (x:xs) = if p x then True else any p xs 
 
 -- all
+all :: (a -> Bool) -> [a] -> Bool
+all _ []     = True
+all p (x:xs) = if p x then all p xs else False
+
 -- and
+and :: [Bool] -> Bool
+and []     = True
+and (x:xs) = if x then and xs else False
+
 -- or
+or :: [Bool] -> Bool
+or []     = False
+or (x:xs) = x || or xs 
+
 -- concat
+concat :: [[a]] -> [a]
+concat []     = []
+concat (x:xs) = x ++ concat xs
 
 -- elem
+elem :: Eq a => a -> [a] -> Bool
+elem _ []     = False
+elem n (x:xs) = n == x || elem n xs
+
 -- (!!)
+(!!) :: [a] -> Int -> a
+(!!) [] _ = error "index too large"
 
 -- filter
 -- map
@@ -151,7 +175,17 @@ any p (x:xs) = if p x then True else any p xs
 -- intercalate
 -- nub
 
+
 -- splitAt
+splitAt :: Int -> [a] -> ([a], [a])
+--splitAt n xs = (take n xs, drop n xs)
+splitAt 0 xs     = ([], xs)
+splitAt n []     = ([], [])
+splitAt n (x:xs) = (x: ys, zs)
+    where
+        (ys,zs) = splitAt (n - 1) xs
+    
+
 -- break
 
 -- lines

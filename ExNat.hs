@@ -104,6 +104,8 @@ m </> n
    | (n <= m)  = Succ((m <-> n) </> n)
    | otherwise = Zero
 
+
+
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
 (<%>) _ Zero = error "WHY ARE YOU TRYING TO DO THAT?"

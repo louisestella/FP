@@ -19,15 +19,15 @@ arrange = fact
 
 -- P(n,r)
 perm :: Integral a => a -> a -> a
-perm = undefined
+perm n r = (fact n) `div` fact (n - r)
 
 -- C(n,r)
 comb :: Integral a => a -> a -> a
-comb = undefined
+comb n r = fact n `div` ( fact r * fact (n - r) )
 
 -- Combinations n over r with repetitions
 combRep :: Integral a => a -> a -> a
-combRep = undefined
+combRep n r = (fact (n + r - 1)) `div` ((fact r) * fact (n - 1))
 
 -- Binomial coefficients
 bicoefs :: Integral a => a -> [a]
