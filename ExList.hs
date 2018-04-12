@@ -157,15 +157,41 @@ elem n (x:xs) = n == x || elem n xs
 
 -- (!!)
 (!!) :: [a] -> Int -> a
-(!!) [] _ = error "index too large"
+[] !! _     = error "index too large"
+(x:_) !! 0  = x
+(_:xs) !! n = xs !! (n - 1) 
 
 -- filter
+filter :: (a -> Bool) -> [a] -> [a]
+filter _ []     = []
+filter p (x:xs) = if p x then x : filter p xs else filter p xs
+
 -- map
+map :: (a -> b) -> [a] -> [b]
+--map f xs = [ f x | x <- xs]
+map _ []     = []
+map f (x:xs) = f x : map f xs
+
 -- cycle
+cycle :: [a] -> [a]
+cycle [] = error "empty list."
+cycle xs = xs ++ cycle xs 
+
 -- repeat
+repeat :: a -> [a]
+repeat n = n : repeat n
+
 -- replicate
+replicate :: Integral i => i -> a -> [a]
+replicate 0 _ = []
+replicate n x = x : replicate (n - 1) x
+
 
 -- isPrefixOf
+isPrefixOf :: Eq a => [a] -> [a] -> Bool
+isPrefixOf [] _          = True
+isPrefixOf (x:xs) (y:ys) = if x == y then isPrefixOf xs ys else False
+
 -- isInfixOf
 -- isSuffixOf
 
