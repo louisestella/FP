@@ -6,7 +6,7 @@ import Prelude
     , Eq(..)
     , Ord(..)
     , Num(..)
-    , Integral
+    , Integral(..)
     , Bool(..)
     , not
     , (&&)
@@ -162,6 +162,9 @@ fromNat :: Integral a => Nat -> a
 fromNat Zero     = 0
 fromNat (Succ n) = 1 + (fromNat n)
 
+instance Integral Nat where
+    toInteger = fromNat
+    quotRem n m = (n </> m, n <%> m)
 
 -- Obs: we can now easily make Nat an instance of Num.
 instance Num Nat where
