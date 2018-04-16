@@ -200,9 +200,31 @@ isInfixOf _ []          = False
 isInfixOf xs ys'@(_:ys) = if not (isPrefixOf xs ys') then isInfixOf xs ys else True 
 
 -- isSuffixOf
+isSuffixOf :: Eq a => [a] -> [a] -> Bool
+isSuffixOf xs ys = isPrefixOf (reverse xs) (reverse ys) 
 
 -- zip
+zip :: [a] -> [b] -> [(a, b)]
+zip [] _          = []
+zip _ []          = []
+zip (x:xs) (y:ys) = (x,y) : zip xs ys
+ 
 -- zipWith
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith _ [] _          = []
+zipWith _ _ []          = []
+zipWith f (x:xs) (y:ys) = f x y : zipWith f xs ys
+
+--unzip
+unzip :: [(a, b)] -> ([a], [b])
+unzip []          = ([],[])
+unzip [(x,y)]     = ([x],[y])
+unzip ((x,y):xys) = (x:xs,y:ys)
+    where
+          (xs,ys) = unzip xys
+         
+
+--subsequences
 
 -- intercalate
 -- nub
