@@ -225,6 +225,12 @@ unzip ((x,y):xys) = (x:xs,y:ys)
          
 
 --subsequences
+subsequences :: [a] -> [[a]]
+subsequences []       = [[]]
+subsequences [x]      = [[],[x]]
+--subsequences (x:y:[]) = [[],[x],[y],[x,y]]
+--subsequences (x:y:xs) = 
+
 
 -- intercalate
 -- nub
